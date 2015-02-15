@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>jutils test</title>
+        <!-- FOR python-backend -->
+
+        <!-- Include and initialise jutils -->
+        <script type="text/javascript"
+                src="{{ url_for('static', filename='src/jutils.js') }}"></script>
+        <script type="text/javascript"
+                src="{{ url_for('static', filename='init.js') }}"></script>
+
+        <!-- Include other jutils modules -->
+        <script type="text/javascript"
+                src="{{ url_for('static', filename='src/meta.js') }}"></script>
+        <script type="text/javascript"
+                src="{{ url_for('static', filename='src/io.js') }}"></script>
+        <script type="text/javascript"
+                src="{{ url_for('static', filename='src/debug.js') }}"></script>
+        <script type="text/javascript"
+                src="{{ url_for('static', filename='src/unittest.js') }}"></script>
+        <!--script type="text/javascript"
+                src="{{ url_for('static', filename='src/.js') }}"></script-->
+
+        <!-- User modules -->
+        <script type="text/javascript"
+                src="{{ url_for('static', filename='main.js') }}"></script>
+
+        <!-- END python-backend -->
+    </head>
+    <body>
+        <script type="text/javascript">
+            main();
+        </script>
+    </body>
+</html>
