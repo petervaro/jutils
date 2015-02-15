@@ -9,8 +9,7 @@ Initialise `jutils`
 Inside `init.js` (which is included after `jutils.js`):
 
     var myGlobals = {};
-    jutils({globals: myGlobals,
-            hasExtraNameSpaceLevel: true});
+    jutils({globals: myGlobals});
 
 After all `jutils` modules has been included:
 

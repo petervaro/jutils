@@ -4,8 +4,8 @@
 **                                   ======                                   **
 **                                                                            **
 **                         Handy JavaScript Snippets                          **
-**                       Version: 0.2.01.114 (20150215)                       **
-**                            File: src/jutils.js                             **
+**                       Version: 0.2.01.137 (20150215)                       **
+**                             File: src/init.js                              **
 **                                                                            **
 **               For more information about the project, visit                **
 **                   <https://github.com/petervaro/jutils>.                   **
@@ -31,27 +31,20 @@
 /* Private constants */
 var __JUTILS_GLOBAL_OBJECT_REFERENCE_6508856906534193__;
 
+
 /*----------------------------------------------------------------------------*/
 /* Public constants */
 var DEBUG;
 
+
 /*----------------------------------------------------------------------------*/
 /* Initialiser */
-function jutils(args)
+(function ()
 {
     'use strict';
 
-    /* Get/set globals */
-    var globals = args.globals || {};
-    if (args.hasExtraNameSpaceLevel)
-        globals = globals.jutils = globals.jutils || {};
-
-    /* Check if 'globals' is valid or not */
-    if (!(globals instanceof Object))
-        throw new TypeError("[function jutils] 'globals' is not an Object");
-
     /* Make it available for public */
-    __JUTILS_GLOBAL_OBJECT_REFERENCE_6508856906534193__ = globals;
+    __JUTILS_GLOBAL_OBJECT_REFERENCE_6508856906534193__ = {};
 
     /*------------------------------------------------------------------------*/
     /* Essential module requirement */
@@ -88,5 +81,35 @@ function jutils(args)
 
     /*------------------------------------------------------------------------*/
     /* Export to global namespace */
-    globals.module = module;
+    __JUTILS_GLOBAL_OBJECT_REFERENCE_6508856906534193__.module = module;
+})();
+
+
+/*----------------------------------------------------------------------------*/
+/* Initialiser */
+function jutils(args)
+{
+    /* Check if 'globals' is valid or not */
+    var globals = args.globals;
+    if (!(globals instanceof Object))
+        throw new TypeError("[function jutils] 'globals' is not an Object");
+
+    /* If using extra name-space level */
+    if (args.extraNameSpaceLevel === undefined ||
+        args.extraNameSpaceLevel)
+            globals.jutils = __JUTILS_GLOBAL_OBJECT_REFERENCE_6508856906534193__;
+    /* If not using extra name-space level */
+    else
+    {
+        var key,
+            keys = Object.keys(__JUTILS_GLOBAL_OBJECT_REFERENCE_6508856906534193__);
+        /* Remap all modules into globals */
+        for (var i=0; i<keys.length; i++)
+        {
+            key = keys[i];
+            globals[key] = __JUTILS_GLOBAL_OBJECT_REFERENCE_6508856906534193__[key];
+        }
+        /* Redirect reference */
+        __JUTILS_GLOBAL_OBJECT_REFERENCE_6508856906534193__ = globals;
+    }
 }

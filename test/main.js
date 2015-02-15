@@ -4,7 +4,7 @@
 **                                   ======                                   **
 **                                                                            **
 **                         Handy JavaScript Snippets                          **
-**                       Version: 0.2.01.129 (20150215)                       **
+**                       Version: 0.2.01.132 (20150215)                       **
 **                             File: test/main.js                             **
 **                                                                            **
 **               For more information about the project, visit                **
@@ -27,11 +27,18 @@
 **                                                                            **
 ************************************************************************ INFO */
 
+var DEBUG = 1;
 var g = g || {};
 
 function main()
 {
     'use strict';
 
+    /* Initialise jutils */
+    jutils({globals: g});
+
+    /* Use it */
+    g.jutils.io.print(['Hello', 'World'], {sep: ', ', end: '!'});
+    g.jutils.io.print(['Hello', 'World'], {sep: ', ', end: '!', file: g.jutils.io.DOCUMENT});
     g.jutils.io.format('{}, {}!', ['hello', 'world']);
 }
