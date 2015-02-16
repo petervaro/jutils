@@ -4,7 +4,7 @@
 ##                                   ======                                   ##
 ##                                                                            ##
 ##                         Handy JavaScript Snippets                          ##
-##                       Version: 0.2.01.139 (20150215)                       ##
+##                       Version: 0.2.01.149 (20150216)                       ##
 ##                                 File: TODO                                 ##
 ##                                                                            ##
 ##               For more information about the project, visit                ##
@@ -27,6 +27,14 @@
 ##                                                                            ##
 ######################################################################## INFO ##
 
-#----------------------------- 0 POSTS IN 0 FILES -----------------------------#
+#----------------------------- 1 POSTS IN 1 FILES -----------------------------#
 TODO:
+  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+  # 1
+  - file: src/meta.js
+    line: 59
+    note: |
+          the wrapper function should use 'arguments' instead
+          of the args, to make it more generic 
+
 

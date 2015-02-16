@@ -5,7 +5,7 @@
 ##                                   ======                                   ##
 ##                                                                            ##
 ##                         Handy JavaScript Snippets                          ##
-##                       Version: 0.2.01.109 (20150215)                       ##
+##                       Version: 0.2.01.146 (20150216)                       ##
 ##                              File: jutils.py                               ##
 ##                                                                            ##
 ##               For more information about the project, visit                ##
@@ -28,14 +28,16 @@
 ##                                                                            ##
 ######################################################################## INFO ##
 
+# Import python modules
+from random import choice
+
 # Import flask modules
 from flask import Flask, render_template, jsonify, request
 
 #------------------------------------------------------------------------------#
-app  = Flask(__name__,
-             static_folder='test',
-             template_folder='test')
-
+app = Flask(__name__,
+            static_folder='test',
+            template_folder='test')
 
 #------------------------------------------------------------------------------#
 @app.route('/')
@@ -43,7 +45,30 @@ def index():
     return render_template('index.html')
 
 
+
+#------------------------------------------------------------------------------#
+@app.route('/data', methods=['GET', 'POST'])
+def data():
+    if request.method == 'GET':
+        return jsonify(method='GET')
+    else:
+        return jsonify(method='POST')
+
+
+
 #------------------------------------------------------------------------------#
 if __name__ == '__main__':
     app.debug = True
-    app.run()
+    # Try to run app on random, but free ports
+    for port in range(5000, 65000):
+        try:
+            print(' * Get new port:', port)
+            app.run(port=port)
+            break
+        except OSError as exception:
+            try:
+                # [Errno 98] Address already in use
+                if exception.errno != 98:
+                    raise exception
+            except AttributeError:
+                raise exception

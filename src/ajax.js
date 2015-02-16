@@ -4,8 +4,8 @@
 **                                   ======                                   **
 **                                                                            **
 **                         Handy JavaScript Snippets                          **
-**                       Version: 0.2.01.140 (20150216)                       **
-**                             File: src/meta.js                              **
+**                       Version: 0.2.01.146 (20150216)                       **
+**                             File: src/ajax.js                              **
 **                                                                            **
 **               For more information about the project, visit                **
 **                   <https://github.com/petervaro/jutils>.                   **
@@ -27,52 +27,81 @@
 **                                                                            **
 ************************************************************************ INFO */
 
+/*----------------------------------------------------------------------------*/
 (function ()
 {
     'use strict';
+
     /* Set/get name-space object */
     var globals = __JUTILS_GLOBAL_OBJECT_REFERENCE_6508856906534193__;
     if (!globals)
-        throw new Error("[module jutils.meta] jutils hasn't been initialised");
+        throw new Error("[module jutils.ajax] jutils hasn't been initialised");
 
-    /* Private constant */
-    var SINGLETONS = {};
+    /* Private constants */
+    var FN_CONNECTION_REPR = "[function jutils.ajax.connect]";
 
     /*------------------------------------------------------------------------*/
-    var meta =
+    var ajax =
     {
         /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-        __module__: 'meta',
+        __module__: 'ajax',
 
         /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-        /* Singleton can be called on any constructor and it acts like a
-           decorator: it will wrap the original constructor with a constructor,
-           which will guard the creation of an object */
-        singleton: function (Constructor)
+        connect: function (args)
         {
-            /* Check arguments */
-            if (!(Constructor instanceof Object))
-                throw new TypeError("[function jutils.meta.singleton] " +
-                                    "first argument is not an Object");
+            /* Get/set values based on arguments */
+            if (args.connectionType !== 'GET' &&
+                args.connectionType !== 'POST')
+                throw new TypeError(FN_CONNECTION_REPR +
+                                    " invalid 'connectionType' argument for request");
+            var connectionType = args.connectionType;
 
-            /* Return wrapper */
-            /* TODO: the wrapper function should use 'arguments' instead
-                     of the args, to make it more generic */
-            return function (args)
-            {
-                /* Get instance */
-                var instance = SINGLETONS[Constructor];
-                /* If instance does not exist yet */
-                if (!instance)
-                    /* Create and store a new one */
-                    instance = SINGLETONS[Constructor] = new Constructor(args);
-                /* Return the singleton object */
-                return instance;
-            };
+            if (typeof args.connectionURL !== 'string' &&
+                !(args.connectionURL instanceof String))
+                throw new TypeError(FN_CONNECTION_REPR +
+                                    " argument 'connectionURL' is not a string");
+            var connectionURL = args.connectionURL;
+
+            if (typeof args.onSuccess !== 'function')
+                throw new TypeError(FN_CONNECTION_REPR +
+                                    " argument 'onSuccess' is not a function");
+            var onSuccess = args.onSuccess;
+
+            if (typeof args.onFailure !== 'function')
+                throw new TypeError(FN_CONNECTION_REPR +
+                                    " argument 'onFailure' is not a function");
+            var onFailure = args.onFailure;
+
+            if (typeof args.onError !== 'function')
+                throw new TypeError(FN_CONNECTION_REPR +
+                                    " argument 'onError' is not a function");
+            var onError = args.onError;
+
+            /* Create a new AJAX request */
+            var request = new XMLHttpRequest();
+            request.open(connectionType, connectionURL, true);
+
+            /* Bind callback if response has been loaded */
+            request.addEventListener('load',
+                function ()
+                {
+                    /* On success */
+                    if (request.status >= 200 && request.status < 400)
+                        onSuccess(request);
+                    /* On failure */
+                    else
+                        onFailure(request);
+                });
+
+            /* Bind callback if there has been an error */
+            request.addEventListener('error', onError.bind(undefined, request));
+
+            /* Trigger AJAX request */
+            request.send();
         },
     };
 
     /*------------------------------------------------------------------------*/
     /* Export to global namespace */
-    globals.meta = meta;
+    globals.ajax = ajax;
 })();

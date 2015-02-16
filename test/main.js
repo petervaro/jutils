@@ -4,7 +4,7 @@
 **                                   ======                                   **
 **                                                                            **
 **                         Handy JavaScript Snippets                          **
-**                       Version: 0.2.01.132 (20150215)                       **
+**                       Version: 0.2.01.146 (20150216)                       **
 **                             File: test/main.js                             **
 **                                                                            **
 **               For more information about the project, visit                **
@@ -41,4 +41,39 @@ function main()
     g.jutils.io.print(['Hello', 'World'], {sep: ', ', end: '!'});
     g.jutils.io.print(['Hello', 'World'], {sep: ', ', end: '!', file: g.jutils.io.DOCUMENT});
     g.jutils.io.format('{}, {}!', ['hello', 'world']);
+
+    g.jutils.io.format('{0} > {1} > {1} > {0}!', ['hello', 'world']);
+    g.jutils.io.format('{0.first} and {1.first} and {0.second}',
+                       [{first: 12, second: true},
+                        {first: undefined}]);
+
+    g.jutils.io.format('{param} and {option.x} or {option.y}',
+                       {param: []});
+
+    function oups()
+    {
+        console.log('Oups, something bad has happened!');
+    }
+
+    g.jutils.ajax.connect({
+        connectionType : 'GET',
+        connectionURL  : '/data',
+        onSuccess: function (request)
+        {
+            console.log(JSON.parse(request.response));
+        },
+        onFailure: oups,
+        onError: oups,
+    });
+
+    g.jutils.ajax.connect({
+        connectionType : 'POST',
+        connectionURL  : '/data',
+        onSuccess: function (request)
+        {
+            console.log(JSON.parse(request.response));
+        },
+        onFailure: oups,
+        onError: oups,
+    });
 }
